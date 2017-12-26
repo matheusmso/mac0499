@@ -1,0 +1,74 @@
+# Ignore all
+*
+
+# Unignore all with extensions
+!*.*
+
+# Unignore all dirs
+!*/
+
+# Unignore Makelfile
+!Makefile
+
+### Above combination will ignore all files without extension ###
+
+# Object files
+*.o
+*.ko
+*.obj
+*.elf
+
+# Precompiled Headers
+*.gch
+*.pch
+
+# Libraries
+*.lib
+*.a
+*.la
+*.lo
+
+# Shared objects
+*.dll
+*.so
+*.so.*
+*.dylib
+
+# Executables
+*.exe
+*.app
+*.i*86
+*.x86_64
+*.hex
+
+# Debug files
+*.dSYM/
+*.su
+
+# Emacs backup files
+*~
+*\#
+
+# Hightail
+Hightail*.jar
+hightail.*
+
+# OSX Crap
+.DS_Store
+
+# LaTeX
+*.aux
+*.log
+*.lof
+*.lot
+*.out
+*.toc
+*.swp
+*.swo
+*.bbl
+*.blg
+*.dvi
+*.pdf
+*.nav
+*.snm
+
