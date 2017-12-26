@@ -71,4 +71,8 @@ hightail.*
 *.pdf
 *.nav
 *.snm
+*.brf
+*.idx
+*.ilg
+*.ind
 
