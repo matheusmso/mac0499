@@ -63,7 +63,7 @@
 % Opções de listing usados para o código fonte
 % Ref: http://en.wikibooks.org/wiki/LaTeX/Packages/Listings
 \lstset{ %
-language=Java,                  % choose the language of the code
+language=C++,                  % choose the language of the code
 basicstyle=\footnotesize,       % the size of the fonts that are used for the code
 numbers=left,                   % where to put the line-numbers
 numberstyle=\footnotesize,      % the size of the fonts that are used for the line-numbers
@@ -109,22 +109,21 @@ framexrightmargin=10pt
     \vspace*{2.3cm}
     Universidade de São Paulo\\
     Instituto de Matemática e Estatística\\
-    Bachalerado em Ciência da Computação
+    Bacharelado em Ciência da Computação
 
 
     \vspace*{3cm}
-    \Large{Nome completo do Autor}
+    \Large{Matheus de Mello Santos Oliveira}
     
 
     \vspace{3cm}
-    \textbf{\Large{Título da monografia \\
-    se for longo ocupa esta linha também}}
+    \textbf{\Large{Árvores de seguimentos e aplicações}}
     
        
     \vskip 5cm
     \normalsize{São Paulo}
 
-    \normalsize{Dezembro de 2015}
+    \normalsize{Dezembro de 2018}
 \end{center}
 
 % ---------------------------------------------------------------------------- %
@@ -134,8 +133,7 @@ framexrightmargin=10pt
 \thispagestyle{empty}
     \begin{center}
         \vspace*{2.3 cm}
-        \textbf{\Large{Título da monografia \\
-    se for longo ocupa esta linha também}}
+        \textbf{\Large{Árvores de seguimentos e aplicações}}
         \vspace*{2 cm}
     \end{center}
 
@@ -149,13 +147,13 @@ framexrightmargin=10pt
     \vskip 5cm
 
     \begin{center}
-    Supervisor: Prof. Dr. Nome do Supervisor\\
-    $[$ Cosupervisor: Prof. Dr. Nome do Cosupervisor $]$
+    Supervisor: Prof. Dr. Carlos Eduardo Ferreira\\
+    %$[$ Cosupervisor: Prof. Dr. Nome do Cosupervisor $]$%
 
     \vskip 5cm
     \normalsize{São Paulo}
 
-    \normalsize{Dezembro de 2015}
+    \normalsize{Dezembro de 2018}
     \end{center}
 \pagebreak
 
@@ -190,13 +188,13 @@ trabalho (palavras-chave).
 
 % ---------------------------------------------------------------------------- %
 % Abstract
-\chapter*{Abstract}
+%% \chapter*{Abstract}
 
-Elemento obrigatório, elaborado com as mesmas características do resumo em
-língua portuguesa.
-\\
+%% Elemento obrigatório, elaborado com as mesmas características do resumo em
+%% língua portuguesa.
+%% \\
 
-\noindent \textbf{Keywords:} keyword1, keyword2, keyword3.
+%% \noindent \textbf{Keywords:} keyword1, keyword2, keyword3.
 
 
 % ---------------------------------------------------------------------------- %
@@ -261,13 +259,13 @@ língua portuguesa.
 
 
 %%%  ---------------------------------------------------------------------------- %
-%% % Índice remissivo
-%% \index{TBP|see{periodicidade região codificante}}
-%% \index{DSP|see{processamento digital de sinais}}
-%% \index{STFT|see{transformada de Fourier de tempo reduzido}}
-%% \index{DFT|see{transformada discreta de Fourier}}
-%% \index{Fourier!transformada|see{transformada de Fourier}}
+% Índice remissivo
+\index{TBP|see{periodicidade região codificante}}
+\index{DSP|see{processamento digital de sinais}}
+\index{STFT|see{transformada de Fourier de tempo reduzido}}
+\index{DFT|see{transformada discreta de Fourier}}
+\index{Fourier!transformada|see{transformada de Fourier}}
 
-%% \printindex   % imprime o índice remissivo no documento 
+\printindex   % imprime o índice remissivo no documento 
 
 \end{document}
