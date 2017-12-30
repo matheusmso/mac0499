@@ -1,0 +1,8 @@
+1 - Introduzir o problema de querys em arrays (uni ou bi dimensionais) e árvores, que podem ser planarizadas
+2 - Mostrar outros tipos de soluções, suas vantagens e desvantagens. Vetor de soma acumulada, sparse table, ...
+3 - Introduzir árvores de segmentos e sua base teórica.
+3.5 - Implementações variadas da ideia, tanto recursivas quanto iterativas com suas respectivas vantagens e desvantagens.
+4 = Aplicação direta da técnica em problemas mais elementares.
+5 - Tópicos intermediários da técnica: atualização em ranges, (lazy propagation).
+6 - Aplicações da técnica.
+7 - Tópicos mais avançados: persistência.
