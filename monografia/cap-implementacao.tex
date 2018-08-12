@@ -1,0 +1,73 @@
+%% ------------------------------------------------------------------------- %%
+\chapter{A árvore de segmentos e sua implementação}
+\label{cap:implementacao}
+
+Apresentada a problemática em que se é possível utilizar a estrutura em análise, 
+passamos a especificar suas características e como implementá-la.
+
+A árvore de segmentos é um estrutura de dados baseada no paradigma de divisão e 
+conquista e pode ser pensada como uma árvore de intervalos avaliados em um vetor 
+fundamental construído de forma a possibilitar perguntas sobre intervalos do 
+vetor e modificações sobre estes mesmos intervalos de forma extremamente 
+eficientes.
+
+A estrutura da árvore de segmentos se baseia nos seguintes fatos:
+
+* é uma árvore binária, ou seja, cada nó possui dois filhos;
+* cada nó representa um intervalo do vetor fundamental e este nó pode conter 
+informações sobre mais do que uma função aplicada em intervalos do vetor 
+fundamental;
+* cada folha da árvore está associada a um intervalo que contém apenas um elemento;
+* subindo na árvore, cada pai representa a união dos resultados das funções 
+aplicadas nos intervalos (disjuntos) representados por seus dois filhos;
+* o nó raiz representa o vetor inteiro.
+
+Para criar tal estrutura precisamos de três operações básicas, quais sejam:
+
+Construção
+
+Para construir uma árvore de segmentos precisamos inicializar valores nos nós 
+desta, valores estes que representam o vetor fundamental. É possível criar a 
+árvore de segmentos tanto de forma top-down (recursiva) ou bottom-up 
+(iterativa). A construção top-down popula o valor do nó raiz que, por sua vez, 
+implica em chamadas recursivas para cada uma das metades do intervalo que contém 
+o intervalo em questão, resultando em outras chamadas para as respectivas metades; 
+os casos base são as folhas, que podem ser calculados imediatamente dos valores 
+originais do vetor. Uma vez calculados os valores das duas metades do intervalo, 
+calcular o valor do pai se resume apenas em aplicar as funções nos respectivos 
+resultados dos subintervalos.
+
+Atualização
+
+Para atualizar uma árvore de segmentos precisamos modificar o valor de algum 
+elemento do vetor fundamental. Para isso modificamos o valor da folha referente 
+a este elemento. As outras folhas não são afetadas por essa atualização uma vez 
+que cada folha está associada a apenas um elemento do vetor. Uma vez modificada 
+a folha em questão o nó pai desta folha é afetado e pode ter seu valor modificado, 
+assim como o nó avô e assim por diante até a raiz, mas nenhum outro nó é afetado. 
+Novamente para executar uma atualização podemos optar pelos métodos top-down 
+(recursivo) ou bottom-up (iterativo). Começamos fazendo a chamada na raiz, o 
+que gera chamadas recursivas para apenas um dos filhos, aquele cujo intervalo 
+contém o elemento que desejamos atualizar, o outro nó não é afetado. O caso base 
+novamente é a folha associada ao elemento do vetor que desejamos atualizar. Depois 
+de finalizada a recursão basta avaliar novamente o resultado da função dos filhos 
+depois da atualização de um deles.
+
+Pergunta
+
+Para perguntar à uma árvore de segmentos, precisamos determinar o resultado de 
+uma função aplicada a um determinado intervalo do vetor fundamental. A execução 
+da pergunta é bastante complexa e acompanhará o exemplo. Assim, retomamos o 
+exemplo do capítulo anterior:
+
+Dado o vetor:
+
+(1, 8, 2, 5, 4, 11, 3, 7)
+
+queremos perguntar o menor valor entre o segundo e o quinto, incluso. 
+
+Representaremos essa pergunta da seguinte forma: f(2,5). Cada nó da árvore de 
+segmentos contém o mínimo de algum intervalo, a raiz contém f(1, 8) que é o 
+menor valor do vetor inteiro, seu filho esquerdo possui f(1, 4) e seu filho 
+direito f(5, 8). Podemos perceber que f(2, 5) = min(f(2, 2), f(3, 4), f(5, 5))
+
