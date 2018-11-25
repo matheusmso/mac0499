@@ -1,0 +1,423 @@
+%% ------------------------------------------------------------------------- %%
+\chapter{Problemas Selecionados}
+\label{cap:maratona}
+
+Neste item dissertaremos acerca de vários exemplos de problemas de programação competitiva
+cuja solução envolve a utilização da estrutura de dados árvore de segmentos. 
+Nos primeiros problemas encontraremos a solução com a
+aplicação direta da implementação da árvore de segmentos, não sendo necessário comentários adicionais, haja vista a vasta explanação anterior.
+Através da solução destes problemas, será possível que os estudantes de programação competitiva verifiquem seu entendimento sobre o tema
+e se suas implementações dos algoritmos estão corretas. Os  problemas que se seguirão versarão sobre a implementação da árvore de segmentos com a propagação preguiçosa.
+Todos os problemas
+estão listados em ordem de dificuldade e possuem um link para um juiz online com o respectivo problema,
+para que o estudante interessado possa submeter e verificar sua própria solução. Além disso, uma implementação
+em C++ da solução de cada problema está disponível em \url{https://linux.ime.usp.br/~matheusmso/mac0499/codigos.html}.
+
+\section{RPLN - Negative Score}
+Este exemplo demonstra a aplicação direta da estrutura estudada neste trabalho, mais precisamente a detalhada no capítulo $4$. Importante notar que esse problema não requer implementação da funcionalidade de atualização.
+\subsection{URL}
+\url{https://www.spoj.com/problems/RPLN/}
+\subsection{Descrição da entrada}
+A primeira linha dos dados de teste começará com um inteiro T representando o número de  casos, cada um dos casos começa com dois inteiros N e Q. N inteiros seguirão indicando a pontuação em cada avaliação, depois disso, Q consultas serão iniciadas, cada consulta consistirá em dois inteiros A e B, o intervalo de interesse.
+\subsection{Descrição da saída}
+Você deve produzir a linha que indica qual teste estamos imprimindo e, em seguida, o resultado de cada consulta, lembre-se, que estamos em busca da pior pontuação da avaliação A à avaliação B, inclusive.
+\subsection{Exemplo}
+\textbf{Entrada:} \\
+2 \\ 
+5 3 \\
+1 2 3 4 5\\
+1 5\\
+1 3\\
+2 4\\
+5 3\\
+1 -2 -4 3 -5\\
+1 5\\
+1 3\\
+2 4\\
+
+\textbf{Saída:} \\
+\textbf{Scenario \#1:} \\
+1\\
+1\\
+2\\
+\textbf{Scenario \#2:} \\
+-5\\
+-4\\
+-4\\
+\subsection{Solução}
+Basta utilizar a estrutura estudada, em sua forma minimal, para responder as perguntas de mínimo em um dado intervalo.
+
+
+\section{INVCNT - Inversion Count}
+\subsection{URL}
+\url{https://www.spoj.com/problems/INVCNT/}
+\subsection{Descrição da entrada}
+A primeira linha contém T, o número de casos de teste seguido por um espaço em branco. Cada um dos testes começa com um número $N$. Cada uma das linhas que seguem contém um dos elementos do vetor que gostaríamos de contar o número de inversões.
+\subsection{Descrição da saída}
+Para cada saída de teste, uma linha dando o número de inversões de A.
+\subsection{Exemplo}
+\textbf{Entrada:} \\
+2\\
+\\
+3\\
+3\\
+1\\
+2\\
+\\
+5\\
+2\\
+3\\
+8\\
+6\\
+1\\
+
+\textbf{Saída:} \\
+2\\
+5\\
+\subsection{Solução}
+Neste problema gostaríamos de responder a seguinte pergunta: dado um número $x$ quantos números maiores que $x$ já estão presentes? Como os números estão limitados a $10^7$ podemos alocar um vetor booleano que marcará se um número está ou não presente na lista. Usando essa estrutura, resolver o problema se resume a processar os números em ordem e perguntar para cada um quantos maiores que ele existem, somar isso a resposta e depois adicioná-lo à estrutura.
+
+Para atingir esse resultado basta alterarmos um pouco a função de atualização:
+\begin{lstlisting}
+void update(int pos, int value, int node = 1, int l = 0, int r = N) {
+  if (l + 1 == r) {
+    segtree[node]++;
+    return;
+  }
+  int mid = (l + r)/2;
+  if (pos < mid)
+    update(pos, value, 2*node, l, mid);
+  else
+    update(pos, value, 2*node+1, mid, r);
+  segtree[node] = join(segtree[2*node], segtree[2*node+1]);
+}
+\end{lstlisting}
+Importante notar que para esse caso, dado que não existe uma lista de origem, não precisamos construir a árvore, ou seja, não precisamos implementar a função $build$.
+
+\section{Potentiometers}
+\subsection{URL}
+\url{https://icpcarchive.ecs.baylor.edu/index.php?option=com_onlinejudge&Itemid=8&page=show_problem&problem=192}
+
+\subsection{Descrição da entrada}
+Cada caso começa com $N$, o número de potenciômetros no array. Cada uma das próximas $N$ linhas contém um número entre $0$ e $1000$, as resistências iniciais dos aparelhos na ordem $1$ a $N$. Cada uma das linhas contém uma ação. Existem três tipos de ação:
+\begin{itemize}
+    \item "S $x$ $r$" - define o aparelho $x$ para $r$ Ohms. $x$ é um número válido de potenciômetro e r é entre $0$ e $1000$.
+    \item "M $x$ $y$" - meça a resistência entre o terminal esquerdo do potenciômetro $x$ e o terminal direito de potenciômetro $y$. Ambos os números serão válidos e $x$ é menor que ou igual a $y$.
+    \item "END" - final deste caso. Aparece apenas uma vez no final de uma lista de ações.
+\end{itemize}
+
+$N = 0$ indica o fim dos casos de teste.
+\subsection{Descrição da saída}
+Para cada caso na entrada, produza uma linha que indique o caso de teste em questão.
+Para cada medição na entrada, imprima uma linha contendo um número: a resistência medida
+em Ohms. As ações devem ser aplicadas ao array de potenciômetro na ordem dada na entrada.
+\subsection{Exemplo}
+\textbf{Entrada:} \\
+3 \\
+100 \\
+100 \\
+100 \\
+M 1 1 \\
+M 1 3 \\
+S 2 200 \\
+M 1 2 \\ 
+S 3 0 \\
+M 2 3 \\
+END \\
+10 \\
+1 \\
+2 \\
+3 \\
+4 \\
+5 \\
+6 \\
+7 \\
+8 \\
+9 \\
+10 \\
+M 1 10 \\
+END \\
+0 \\
+
+\textbf{Saída:} \\
+Case 1: \\
+100 \\
+300 \\
+300 \\
+200 \\
+Case 2: \\
+55 \\
+
+\subsection{Solução}
+Esse problema também é bastante direto, precisamos atualizar elementos da lista e responder para perguntas do tipo qual a soma deste sub intervalo.
+
+Para isso basta utilizar a estrutura detalhada no capítulo $4$ com a função de união de dois nós apresentada na seção $5.5$.
+
+\section{Banco do Faraó}
+\subsection{URL}
+\url{https://br.spoj.com/problems/BANFARAO/}
+
+\subsection{Descrição da entrada}
+A entrada é composta por diversas instâncias. A primeira linha da entrada contém um inteiro $T$ indicando o número de instâncias.
+A primeira linha de cada instância contém um inteiro $N$, indicando o número de contas no Banco do Faraó. A segunda linha de cada instância contém $N$ inteiros, entre $-10000$ até $10000$, indicando os saldos nas contas dos correntistas. A terceira linha contém um inteiro $Q$ indicando o número de consultas que serão feitas. Cada uma das $Q$ linhas seguintes contém dois inteiros $A$ e $B$ indicando o intervalo que deve ser consultado.
+
+\subsection{Descrição da saída}
+Para cada instância seu programa deve produzir $Q$ linhas na saída, sendo uma para cada consulta. Cada uma dessas linhas deve conter dois inteiros: o primeiro representa a soma do intervalo com maior soma, e o segundo, o número de elementos desse intervalo. Caso haja mais de um intervalo com maior soma, imprima o número de elementos naquele com maior número de elementos.
+
+\subsection{Exemplo}
+\textbf{Entrada:} \\
+3 \\
+3 \\
+-1 -2 -3 \\
+1 \\
+1 1 \\
+8 \\
+1 2 -1 4 9 8 -1 2 \\
+4 \\
+1 3 \\
+1 4 \\
+2 5 \\
+7 8 \\
+3 \\
+0 0 0 \\
+1 \\
+1 3 \\
+
+\textbf{Saída:} \\
+-1 1 \\
+3 2 \\
+6 4 \\
+14 4 \\
+2 1 \\
+0 3 \\
+
+\subsection{Solução}
+Para responder qual o subintervalo de maior soma e quantos elementos ele possúi, precisamos guardar para cada intervalo do vetor as seguintes informações:
+\begin{itemize}
+    \item a soma do subintervalo com maior soma do intervalo e seu tamanho.
+    \item a maior soma de prefixo do intervalo e seu tamanho.
+    \item a maior soma de sufixo do intervalo e seu tamanho.
+    \item a soma total do intervalo e seu tamanho.
+\end{itemize}
+
+Para isso definimos o nó da árvore da seguinte forma:
+\begin{lstlisting}
+struct node {
+  pair<int, int> bst;
+  pair<int, int> pre;
+  pair<int, int> suf;
+  pair<int, int> tot;
+};
+node seg[4*N];
+\end{lstlisting}
+
+Dessa forma podemos usar a estrutura definida no capítulo $4$ e basta adaptar a função que une dois nós. Dados dois nós para uni-los basta fazer algumas comparações:
+\begin{itemize}
+    \item a soma do subintervalo com maior soma desse novo intervalo é o máximo entre $3$ fatores, o subintervalo de maior valor do nó esquerdo, o subintervalo de maior valor do nó direito e a soma do maior sufixo do nó esquerdo com o maior prefixo do nó direito.
+    \item a maior soma de prefixo desse novo intervalo é o máximo entre a maior soma de prefixo do nó esquerdo e o total do nó esquerdo somado com a maior soma de prefixo do nó direito.
+    \item a maior soma de sufixo desse novo intervalo é o máximo entre a maior soma de sufixo do nó direito e o total do nó direito somado com a maior soma de sufixo do nó esquerdo.\
+    \item a soma total desse novo intervalo é simplesmente a soma dos totais dos nós esquerdo e direito.
+\end{itemize}
+
+\begin{lstlisting}
+node join(node a, node b) {
+  if (a.bst.second == 0) return b;
+  if (b.bst.second == 0) return a;
+  node aux;
+  aux.tot = a.tot+b.tot;
+  aux.bst = max({a.bst, b.bst, a.suf+b.pre});
+  aux.pre = max(a.pre, a.tot+b.pre);
+  aux.suf = max(b.suf, b.tot+a.suf);
+  return aux;
+}
+\end{lstlisting}
+As duas primeira linhas da função tratam os casos extremos onde um dos nós representa um intervalo vazio.
+
+E a criação de um novo nó segue a seguinte prática uma vez que um elemento é o total, melhor prefixo sufixo e soma.
+\begin{lstlisting}
+void build(int no = 1, int l = 0, int r = n) {
+  if (l + 1 == r) {
+    seg[no].bst = make_pair(v[l], 1);
+    seg[no].pre = make_pair(v[l], 1);
+    seg[no].suf = make_pair(v[l], 1);
+    seg[no].tot = make_pair(v[l], 1);
+    return;
+  }
+  int mid = (l + r)/2;
+  build(2*no, l, mid);
+  build(2*no+1, mid, r);
+  seg[no] = join(seg[2*no], seg[2*no+1]);
+}
+\end{lstlisting}
+
+Esse problema não necessita a implementação da função de atualização. O problema GSS3 é bastatnte similar porém exige essa funcionalidade.
+
+\section{Interval Product}
+\subsection{URL}
+\url{https://uva.onlinejudge.org/index.php?option=onlinejudge&page=show_problem&problem=3977}
+
+\subsection{Descrição da entrada}
+A primeira linha contém dois inteiros $N$ e $k$, indicando respectivamente o número de elementos na sequência e o número de rodadas do jogo. A segunda linha contém $N$ inteiros $x_i$ que representam os valores iniciais da sequência. Cada uma das próximas $k$ linhas descreve um comando e começa com uma letra maiúscula que é "C" ou "P". Se a letra for 'C', a linha descreve um comando de mudança e a letra é seguida por dois inteiros $i$ e $v$ indicando que $x_i$ deve receber o valor $v$. Se a letra for "P", a linha descreve um comando do produto e a letra é seguida por dois inteiros $i$ e $j$ indicando que o produto de $x_i$ a $x_j$, inclusive, deve ser calculado. Dentro de cada caso de teste, há pelo menos um comando do produto.
+\subsection{Descrição da saída}
+Para cada caso de teste, imprima uma linha com uma cadeia representando o resultado de todos os comandos do produto no caso de teste. O $i$-ésimo caractere da string representa o resultado do i-ésimo comando do produto. Se o resultado do comando for positivo, o caractere deve ser "+" (mais); se o resultado for negativo, o caractere deve ser "-" (menos); se o resultado for zero, o caractere deve ser "0" (zero).
+\subsection{Exemplo}
+\textbf{Entrada:} \\
+4 6 \\
+-2 6 0 -1 \\
+C 1 10 \\
+P 1 4 \\
+C 3 7 \\ 
+P 2 2 \\
+C 4 -5 \\
+P 1 4 \\
+5 9 \\
+1 5 -2 4 3 \\
+P 1 2 \\
+P15 \\
+C 4 -5 \\
+P 1 5 \\ 
+P 4 5 \\
+C 3 0 \\ 
+P 1 5 \\
+C 4 -5 \\
+C 4 -5 \\
+\textbf{Saída:} \\
+0+- \\
++-+-0 \\
+
+\subsection{Solução}
+Para responder se o resultado do produto de um intervalo é positivo negativo ou zero basta que guardemos duas informações:
+\begin{itemize}
+    \item quantos números negativos existem num dado intervalo.
+    \item quantos zeros existem num dado intervalo.
+\end{itemize}
+Assim basta usarmos duas árvores se segmento, muito parecidas com a utilizada no problema $6.2$, ou seja, uma árvore de segmento que guarda qutos elementos existem num dado intervalo, uma árvore de segmento de soma onde o vetor de origem é $1$ se o elemento está presente e $0$ caso contrário.
+
+Para isso alteramos a função de construção para representar essa lógica:
+\begin{lstlisting}
+void build(int node = 1, int l = 0, int r = n) {
+  if (l + 1 == r) {
+    if (v[l] == 0)
+      segz[node] = 1;
+    else if (v[l] < 0)
+      segn[node] = 1;
+    else
+      segz[node] = segn[node] = 0;
+    return;
+  }
+  int mid = (l + r)/2;
+  build(2*node, l, mid);
+  build(2*node+1, mid, r);
+  segn[node] = join(segn[2*node], segn[2*node+1]);
+  segz[node] = join(segz[2*node], segz[2*node+1]);
+}
+\end{lstlisting}
+onde $segz$ é a árvore que representa o vetor de presença de zeros e $segn$ a árvore que representa a presença de negativos.
+
+A atualização também precisa refletir essa mudança:
+\begin{lstlisting}
+void update(int pos, int value, int node = 1, int l = 0, int r = n) {
+  if (value > 0) {
+    segn[node] -= v[pos] < 0;
+    segz[node] -= v[pos] == 0;
+  }
+  else if (value < 0) {
+    segn[node] += v[pos] >= 0;
+    segz[node] -= v[pos] == 0;
+  }
+  else {
+    segn[node] -= v[pos] < 0;
+    segz[node] += v[pos] != 0;
+  }
+  if (l + 1 == r) {
+    v[pos] = value;
+    return;
+  }
+  int mid = (l + r)/2;
+  if (pos < mid)
+    update(pos, value, 2*node, l, mid);
+  else
+    update(pos, value, 2*node+1, mid, r);
+  segz[node] = join(segz[2*node], segz[2*node+1]);
+  segn[node] = join(segn[2*node], segn[2*node+1]);
+}
+\end{lstlisting}
+
+\section{GSS3 - Can you answer these queries III}
+\subsection{URL}
+\url{https://www.spoj.com/problems/GSS3/}
+
+\subsection{Descrição da entrada}
+A primeira linha de entrada contém um inteiro $N$. A linha a seguir contém $N$ inteiros, representando a sequencia $a_1$..$a_N$.
+A terceira linha contém um inteiro $M$. As próximas $M$ linhas contêm as operações no seguinte formato:
+\begin{itemize}
+    \item 0 $x$ $y$: modifica $a_x$ para $y$.
+    \item 1 $x$ $y$: impressão $max{[a_i + a_{i + 1} + .. + a_j | x \leq i \leq j \leq y}$.
+\end{itemize}
+
+\subsection{Descrição da saída}
+Para cada consulta, imprima um inteiro como o problema requerido.
+\subsection{Exemplo}
+\textbf{Entrada:} \\
+4 \\
+1 2 3 4 \\
+4 \\
+1 1 3 \\
+0 3 -3 \\
+1 2 4 \\
+1 3 3 \\
+
+\textbf{Saída:} \\
+6 \\
+4 \\
+-3 \\
+
+\subsection{Solução}
+Como citado no problema $6.4$ esse problema é basicamente uma extensão dele. Precisamos apenas implementar a funcionalidade de atualização. Vale notar que não precisamos mais do tamanho do intervalo o que simplifica um pouco a estrutura:
+\begin{lstlisting}
+void update(int pos, lint value, int no = 1, int l = 0, int r = n) {
+  if (l + 1 == r) {
+    segtree[no].bst = segtree[no].pre = segtree[no].suf = segtree[no].tot = v[pos] = value;
+    return;
+  }
+  int mid = (l + r)/2;
+  if (pos < mid)
+    update(pos, value, 2*no, l, mid);
+  else
+    update(pos, value, 2*no+1, mid, r);
+  segtree[no] = join(segtree[2*no], segtree[2*no+1]);
+}
+\end{lstlisting}
+Sempre que atualizarmos um elemento do vetor, esse elemento é representado por um nó e esse nó tem como total, melhor soma, melhor prefixo e melhor sufixo exatamente o seu valor na posição referente no vetor.
+
+\section{HORRIBLE - Horrible Queries}
+\subsection{URL}
+\url{https://www.spoj.com/problems/HORRIBLE/}
+
+\subsection{Descrição da entrada}
+Na primeira linha você receberá $T$, número de casos de teste.
+Cada caso de teste começará com $N$ e $C$. Depois disso, você receberá $C$:
+\begin{itemize}
+    \item 0 $p$ $q$ $v$ - adicionar $v$ para todos os elementos entre $p$ e $q$ inclusive.
+    \item 1 $p$ $q$ - imprimir a soma de todos os elementos entre $p$ e $q$ inclusive.
+\end{itemize}
+\subsection{Descrição da saída}
+Imprima as respostas das consultas.
+\subsection{Exemplo}
+Entrada:\\
+1\\
+8 6\\
+0 2 4 26\\
+0 4 8 80\\
+0 4 5 20\\
+1 8 8 \\
+0 5 7 14\\
+1 4 8\\
+
+Saída:\\
+80\\
+508\\
+
+\subsection{Solução}
+
+Aplicação direta da estrutura apresentada no capítulo $5$.

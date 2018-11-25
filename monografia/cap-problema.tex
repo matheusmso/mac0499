@@ -2,108 +2,128 @@
 \chapter{A escolha do problema}
 \label{cap:problema}
 
-Na presente pesquisa demostraremos que o tipo de problema que gostarÌamos de
-resolver È: dado um conjunto armazenado em uma estrutura de acesso aleatÛrio
-aos seus Ìndices (como um vetor) e uma operaÁ„o associativa, desejamos responder 
-eficientemente o resultado desta operaÁ„o aplicada aos elementos de um intervalo 
-desse conjunto m˙ltiplas vezes.
+Na presente pesquisa demostraremos que o tipo de problema que gostar√≠amos de
+resolver √©: dado um conjunto armazenado em uma estrutura de acesso aleat√≥rio
+aos seus √≠ndices (como um vetor) e uma opera√ß√£o associativa, desejamos responder 
+eficientemente o resultado desta opera√ß√£o aplicada aos elementos de um intervalo 
+desse conjunto m√∫ltiplas vezes.
 
-IMAGE
+\begin{figure}[htb]
+\includegraphics[width=12cm]{figuras/fig4.pdf}
+\caption{\label{fig:fig4}Exemplo de estrutura, com opera√ß√µes aplicadas em intervalos.}
+\end{figure}
 
-A motivaÁ„o deste trabalho revela-se no fato de que problemas que envolvem 
-realizar m˙ltiplas consultas sobre o resultado de uma operaÁ„o associativa em 
-intervalos de um dado conjunto com relaÁ„o de ordem nos Ìndices, s„o encontrados 
-em programaÁ„o competitiva. Tendo em vista a robustez dos mÈtodos utilizados para 
-resolvÍ-los, esse tipo de problema aparece com uma frequÍncia um pouco menor que 
-outros problemas que envolvem algoritmos mais simples, raz„o pela qual dominar a 
-soluÁ„o deles trar· o diferencial nas competiÁıes de programaÁ„o.
+\section{Motiva√ß√£o}
+A motiva√ß√£o deste trabalho revela-se no fato de que problemas que envolvem 
+realizar m√∫ltiplas consultas sobre o resultado de uma opera√ß√£o associativa em 
+intervalos de um dado conjunto com rela√ß√£o de ordem nos √≠ndices, s√£o encontrados 
+em programa√ß√£o competitiva. Tendo em vista a robustez dos m√©todos utilizados para 
+resolv√™-los, esse tipo de problema aparece com uma frequ√™ncia um pouco menor que 
+outros problemas que envolvem algoritmos mais simples, raz√£o pela qual dominar a 
+solu√ß√£o deles trar√° o diferencial nas competi√ß√µes de programa√ß√£o.
 
-O objetivo deste trabalho È tornar o estudo deste tÛpico menos penoso, uma vez 
-que existe muito pouco material em lÌngua portuguesa e que a maioria se limita a 
-apontar uma implementaÁ„o "caixa preta" pouco detalhada. AlÈm disso, este material 
-pretende servir como referÍncia para todos que tÍm interesse em maratona de 
-programaÁ„o ou que gostariam de estudar e se aprofundar no tÛpico.
+\section{Objetivo}
+O objetivo deste trabalho √© tornar o estudo deste t√≥pico menos penoso, uma vez 
+que existe muito pouco material em l√≠ngua portuguesa e que a maioria se limita a 
+apontar uma implementa√ß√£o "caixa preta" pouco detalhada. Al√©m disso, este material 
+pretende servir como refer√™ncia para todos que t√™m interesse em maratona de 
+programa√ß√£o ou que gostariam de estudar e se aprofundar no t√≥pico.
 
-Seguindo com as possibilidades de aplicaÁ„o do mÈtodo, faz-se necess·rio 
+\section{Aplica√ß√£o}
+Seguindo com as possibilidades de aplica√ß√£o do m√©todo, faz-se necess√°rio 
 aprofundarmos um pouco mais nos tipos de problemas tratados. Assim, considerando 
-que dados n itens de supermercado; cada item possui um preÁo e um peso. AlÈm 
-disso, os n itens est„o organizados por categoria, ou seja, primeiro os laticÌnios, 
-depois os de limpeza, etc. Como administradores do supermercado, gostarÌamos de 
-todos os dias saber quais s„o os produtos mais baratos de cada categoria para que 
-possamos preencher cartazes de promoÁ„o, levando em conta o fato de que todos os 
-dias os preÁos de alguns dos produtos podem mudar.
+que dados n itens de supermercado; cada item possui um pre√ßo e um peso. Al√©m 
+disso, os n itens est√£o organizados por categoria, ou seja, primeiro os latic√≠nios, 
+depois os de limpeza, etc. Como administradores do supermercado, gostar√≠amos de 
+todos os dias saber quais s√£o os produtos mais baratos de cada categoria para que 
+possamos preencher cartazes de promo√ß√£o, levando em conta o fato de que todos os 
+dias os pre√ßos de alguns dos produtos podem mudar.
 
-Como clientes, temos acesso a listas de produtos como esta de v·rios supermercados 
-e, com isso, gostarÌamos de saber, naquele dia, em qual supermercado a soma de 
-produtos de uma determinada categoria È menor, levando em conta promoÁıes 
-rel‚mpago.
+Como clientes, temos acesso a listas de produtos como esta de v√°rios supermercados 
+e, com isso, gostar√≠amos de saber, naquele dia, em qual supermercado a soma de 
+produtos de uma determinada categoria √© menor, levando em conta promo√ß√µes 
+rel√¢mpago.
 
-Na ciÍncia da computaÁ„o a estrutura de dados que nos ajuda a resolver este tipo 
-de problema È chamada de ¡rvore de Segmentos; tal estrutura È extremamente vers·til,
-baseada no paradigma de divis„o e conquista, sendo possÌvel idealiz·-la como uma 
-·rvore usada para guardar informaÁıes sobre intervalos (segmentos) de um dado 
-vetor (conjunto com relaÁ„o de ordem nos Ìndices) construÌda de tal forma a 
-permitir perguntas e modificaÁıes a intervalos deste vetor de forma eficiente.
+Na ci√™ncia da computa√ß√£o a estrutura de dados que nos ajuda a resolver este tipo 
+de problema √© chamada de √Årvore de Segmentos; tal estrutura √© extremamente vers√°til,
+baseada no paradigma de divis√£o e conquista, sendo poss√≠vel idealiz√°-la como uma 
+√°rvore usada para guardar informa√ß√µes sobre intervalos (segmentos) de um dado 
+vetor (conjunto com rela√ß√£o de ordem nos √≠ndices) constru√≠da de tal forma a 
+permitir perguntas e modifica√ß√µes a intervalos deste vetor de forma eficiente.
 
-Uma das aplicaÁıes mais comuns desta estrutura envolve solucionar o problema 
+Uma das aplica√ß√µes mais comuns desta estrutura envolve solucionar o problema 
 do menor valor de um dado segmento, exemplificado acima pela lista de supermercado. 
-Neste problema nos È dado um vetor com n˙mero e nos È perguntado in˙meras vezes 
-qual È o menor valor de um dado intervalo. Por exemplo:
+Neste problema nos √© dado um vetor com n√∫mero e nos √© perguntado in√∫meras vezes 
+qual √© o menor valor de um dado intervalo.
 
+\section{Exemplo}
 Dado o seguinte vetor:
 
-(1, 8, 2, 5, 4, 11, 3, 7)
+$$(1, 8, 2, 5, 4, 11, 3, 7)$$
 
 Queremos saber o menor valor entre o terceiro e o quinto elemento: 
-min (2, 5, 4) = 2
+$min (2, 5, 4) = 2$
 
-Depois gostarÌamos de atualizar o valor do sexto elemento para 9, pois entramos 
-em um perÌodo de promoÁ„o rel‚mpago para este produto, o que transforma o dado 
+Depois gostar√≠amos de atualizar o valor do sexto elemento para 9, pois entramos 
+em um per√≠odo de promo√ß√£o rel√¢mpago para este produto, o que transforma o dado 
 vetor em: 
 
-(1, 8, 2, 5, 4, 9, 3, 7)
+$$(1, 8, 2, 5, 4, 9, 3, 7)$$
 
 E agora perguntar qual o elemento mais barato entre o sexto e o oitavo: 
-min (9, 3, 7) = 3
+$min (9, 3, 7) = 3$
 
-Divis„o e conquista
+Divis√£o e conquista
 
-A idÈia da soluÁ„o utilizando o paradigma de divis„o e conquista conserva-se no 
-seguinte raciocÌnio:
+A ideia da solu√ß√£o utilizando o paradigma de divis√£o e conquista conserva-se no 
+seguinte racioc√≠nio:
 
-* Se o intervalo que estamos analisando possui apenas um elemento ent„o este 
-elemento È trivialmente o menor do intervalo;
+\begin{itemize}
+    
+    \item Se o intervalo que estamos analisando possui apenas um elemento ent√£o este 
+elemento √© trivialmente o menor do intervalo;
 
-* Caso contr·rio, dividimos o intervalo em dois subintervalos de aproximadamente 
-mesmo tamanho, tomamos o mÌnimo de cada um deles e, como a operaÁ„o de mÌnimo È 
-associativa, o mÌnimo deste intervalo È o mÌnimo entre os dois mÌnimos sub 
-intervalos;
+    \item Caso contr√°rio, dividimos o intervalo em dois subintervalos de 
+    aproximadamente mesmo tamanho, tomamos o m√≠nimo de cada um deles e, como 
+    a opera√ß√£o de m√≠nimo √© associativa, o m√≠nimo deste intervalo √© o m√≠nimo 
+    entre os dois m√≠nimos sub intervalos;
 
-Se ai se x = y ou min (f(x, floor((x+y)/2)), f(floor((x+y)/2)+1, y)
+\end{itemize}
 
-AplicaÁıes desta estrutura n„o se limitam a vetores de n˙meros inteiros e, 
-frequentemente, s„o utilizados para resolver problemas em ·reas como geometria 
-computacional onde um ponto pode guardar muitas informaÁıes alÈm de sua posiÁ„o 
+Ou seja: 
+
+\begin{center}
+    $a_i$ se $x = y$ 
+    \\
+    ou
+    \\
+    $min (f(x, \lfloor{\frac{x+y}{2}}\rfloor)), f(\lfloor{\frac{x+y}{2}}\rfloor + 1, y)$ caso contrario.
+\end{center}
+
+Aplica√ß√µes desta estrutura n√£o se limitam a vetores de n√∫meros inteiros e, 
+frequentemente, s√£o utilizados para resolver problemas em √°reas como geometria 
+computacional onde um ponto pode guardar muitas informa√ß√µes al√©m de sua posi√ß√£o 
 no plano.
 
-Por outro lado, se tomarmos o j· citado exemplo do supermercado e adicionarmos 
-aos dados uma sacola com uma certa capacidade e pergunt·ssemos qual È o 
+\section{Observa√ß√µes}
+Por outro lado, se tomarmos o j√° citado exemplo do supermercado e adicionarmos 
+aos dados uma sacola com uma certa capacidade e pergunt√°ssemos qual √© o 
 subintervalo que cabe na sacola a considerar que a soma do peso de seus itens 
-È menor ou igual ‡ capacidade da sacola com a intenÁ„o de saber se isso maximiza 
-a soma dos preÁos, infelizmente n„o seria possÌvel encontrar a resposta atravÈs 
-da utilizaÁ„o da ·rvore de segmentos, uma vez que a estrutura que aqui delineamos 
-n„o resolve este problema diretamente.
+√© menor ou igual a capacidade da sacola com a intens√£o de saber se isso maximiza 
+a soma dos pre√ßos, infelizmente n√£o seria poss√≠vel encontrar a resposta atrav√©s 
+da utiliza√ß√£o da √°rvore de segmentos, uma vez que a estrutura que aqui delineamos 
+n√£o resolve este problema diretamente.
 
-Uma modificaÁ„o simples que torna o problema bastante mais complexo, seria 
-considerar um dado vetor de tamanho n e responder in˙meras vezes perguntas da 
+Uma modifica√ß√£o simples que torna o problema bastante mais complexo, seria 
+considerar um dado vetor de tamanho n e responder in√∫meras vezes perguntas da 
 seguinte natureza:
 
-dado um intervalo e um n˙mero k, quantos elementos neste intervalo s„o maiores 
+dado um intervalo e um n√∫mero k, quantos elementos neste intervalo s√£o maiores 
 que k.
 
 Imperioso salientar, ainda, que esta estrutura pode ser generalizada para mais 
-do que uma dimens„o.  
+do que uma dimens√£o.  
 
-Neste sentido, veremos a seguir as formas de implementaÁ„o da ·rvore de 
-segmentos, entendendo melhor sua versatilidade e formas de aplicaÁ„o.
+Neste sentido, veremos a seguir as formas de implementa√ß√£o da √°rvore de 
+segmentos, entendendo melhor sua versatilidade e formas de aplica√ß√£o.
 

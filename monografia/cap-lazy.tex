@@ -1,0 +1,105 @@
+%% ------------------------------------------------------------------------- %%
+\chapter{Propagação preguiçosa}
+\label{cap:lazy}
+
+Uma das formas de adaptação da árvore de segmentos, de forma a otimizar a utilização da ferramenta e maximizar sua aplicação é a Lazy Propagation ou propagação preguiçosa.
+
+Como o próprio nome sugere, a propagação preguiçosa é a forma de propagar a atualização de um determinado intervalo na árvore apenas quando for necessária sua utilização sem que seja necessário caminhar por todos os nós da árvore fazendo com que o gasto de tempo do algorítimo seja menor.
+
+A base da propagação lenta se dá através da marcação do nó na árvore que deve ser alterado, uma vez que ambas as árvores desfrutam do mesmo índice e, quando existe a necessidade de consultar os dados de um segmento, verifica-se na árvore auxiliar se há marcação em algum nó; havendo a marcação, faz-se atualização dos nós filhos até a profundidade que descer para a consulta, zerando-se o nó da árvore auxiliar e marcando a atualização apenas no nó que esteve pendente de atualização.
+
+Para exemplificar de maneira didática o funcionamento de propagação preguiçosa, tomaremos como exemplo a possibilidade de termos diversos baldes com uma determinada quantidade (inteira) de litros de água:
+Lista de baldes:
+$$(3, 2, 5, 7, 9)$$
+Agora, desejamos adicionar 2 litros apenas nos baldes de que pertençam ao intervalo $[1, 2]$, tendo então, a seguinte lista atualizada:
+$$(3, 4, 7, 7, 9)$$
+Passaremos a expor, então, a construção da árvore de segmentos com a implementação da propagação preguiçosa.
+
+\section{Representação da Árvore}
+
+Para representar o universo desta árvore de segmentos, nesse caso, sabemos que o conjunto original que nos interessa partirá de no máximo 100 mil elementos (assim como na implementação original), dentre os quais realizaremos as perguntas de soma dos elementos de um dado intervalo, tendo em vista que estamos tratando de uma forma de adaptação da árvore de segmentos.
+
+\begin{lstlisting}
+const int N = (int)1e5+7;
+const int NEUTRAL = 0;
+int segtree[4*N];
+int lazy[4*N]
+\end{lstlisting}
+
+Além do vetor da árvore que já existia para a representação da árvore de segmento, alocaremos um segundo vetor para guardar a informação a ser propagada pelos nós de forma preguiçosa. Configuramos a variável neutra para $0$ pois estamos lidando com somas, nesse caso.
+
+\section{Construção}
+Mantêm-se o mesmo raciocínio da construção da árvore de segmentos visto no item 4.3, uma vez que a estrutura de construção da árvore não precisa ser modificada para esta adaptação.
+
+É necessário apenas um segundo vetor como citado acima.
+
+\section{Atualização}
+A atualização sofre alterações sutis.
+
+\begin{lstlisting}
+void update(int x, int y, int value, int node = 1, int l = 0, int r = n) {
+    if (x >= r || y <= l) return;
+    if (x <= l && y >= r) {
+        app(node, l, r, value);
+        return;
+    }
+    shift(node, l, r);
+    int mid = (l + r)/2;
+    update(x, y, value, 2*node, l, mid);
+    update(x, y, value, 2*node+1, mid, r);
+    segtree[node] = join(segtree[2*node], segtree[2*node+1]);
+}
+\end{lstlisting}
+Uma vez que estamos trabalhando com atualização em intervalo e não de um elemento como no caso anterior, precisamos de uma lógica muito similar à utilizada na seção $4.5$ do capítulo anterior.
+
+Uma vez aplicada a lógica de intervalos, as alterações se restringem às linhas $4$ e $7$. A nova função chamada na linha $4$, $app$ tem o objetivo de aplicar as mudanças para os filhos deste nó caso o intervalo de interesse contenha completamente o intervalo representado por ele. A função $shift$, chamada na linha $7$, tem como responsabilidade propagar as mudanças para os filhos deste nó. Como veremos a chamada da função de propagação é necessária tanto na atualização como na pergunta, pois, uma vez que é necessário caminhar por um dado nó, executar uma ação a mais não altera assintoticamente o desempenho da mesma.
+
+\section{Pergunta}
+A atualização é basicamente a mesma da árvore original; precisamos apenas introduzir a chamada da função de propagação conforme citado na seção anterior.
+
+\begin{lstlisting}
+int query(int x, int y, int node = 1, int l = 0, int r = n) {
+    if (x >= r || y <= l) return NEUTRAL;
+    if (x <= l && y >= r) return segtree[node];
+    shift(node, l, r);
+    int mid = (l + r)/2;
+    return join(query(x, y, 2*node, l, mid), query(x, y, 2*node+1, mid, r));
+}
+\end{lstlisting}
+
+Como veremos, a função de propagação tem ação atômica, $O(1)$ e portanto, sua chamada dentro das funções de atualização e pergunta não altera a complexidade original de tais funções e portanto ambas continuam tendo gasto de tempo proporcional a $O(\log N)$.
+
+\section{União de dois nós}
+Se resume a uma soma nesse caso.
+\begin{lstlisting}
+int join(int a, int b) {
+    return a + b;
+}
+\end{lstlisting}
+
+\section{Propagação}
+Caso a propagação seja necessária, a responsabilidade desta função será propagar a informação do presente nó para seus filhos.
+
+\begin{lstlisting}
+void shift(int node, int l, int r) {
+    int mid = (l + r)/2;
+    if (lazy[node] != 0) {
+        app(2*node, l, mid, lazy[node]);
+        app(2*node+1, mid, r, lazy[node]);
+    }
+    lazy[node] = 0;
+}
+\end{lstlisting}
+
+Essa função propaga a informação para seus filhos chamando a função de aplicação dessa propagação nestes. Uma vez aplicada devemos marcar esse nó como propagado, isso é feito na linha $7$.
+
+\section{Aplicação da Propagação}
+
+\begin{lstlisting}
+void app(int node, int l, int r, int x){
+	lazy[node] += x;
+	segtree[node] += (r - l) * x;
+}
+\end{lstlisting}
+
+Finalmente aplicaremos a propagação para um dado nó; essa operação é simplesmente somar neste o valor que desejamos adicionar no intervalo, vezes o tamanho do intervalo representado por esse nó e marcar o aumento necessário no nó de propagação para que esse valor seja propagado para seus filhos quando necessário.
